@@ -34,3 +34,26 @@ $$ LANGUAGE plpgsql;
 ```
 SELECT s.score, DENSE_RANK() OVER(ORDER BY score desc) AS rank FROM Scores s
 ```
+###181
+
+```
+SELECT a.Name AS Employee
+FROM Employee a JOIN Employee b on a.ManagerId = b.Id
+WHERE a.Salary > b.Salary
+```
+
+##182
+
+```
+SELECT email FROM person
+GROUP BY email
+HAVING COUNT(email) > 1
+```
+
+##Game Play Analysis I
+
+```
+SELECT player_id, min(event_date) AS first_login FROM activity
+GROUP BY player_id
+```
+
