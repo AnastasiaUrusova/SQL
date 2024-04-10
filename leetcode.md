@@ -56,4 +56,26 @@ HAVING COUNT(email) > 1
 SELECT player_id, min(event_date) AS first_login FROM activity
 GROUP BY player_id
 ```
+##262
 
+```
+WITH twb AS(
+    SELECT request_at::date as day, status FROM trips
+    WHERE client_id NOT IN (
+        SELECT users_id FROM users WHERE banned = 'Yes'
+    )
+    AND driver_id NOT IN (
+        SELECT users_id FROM users WHERE banned = 'Yes'
+    )
+)
+
+SELECT 
+    day AS "Day",
+    ROUND (CAST(COUNT(*)FILTER (WHERE status LIKE 'cancelled%') AS NUMERIC)
+    /
+    CAST(COUNT(*) AS NUMERIC) ,2) AS "Cancellation Rate"
+FROM twb
+WHERE day BETWEEN '2013-10-01' AND '2013-10-03'
+GROUP BY day
+ORDER BY 1
+```
